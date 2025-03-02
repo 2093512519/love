@@ -3,59 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Rain</title>
+    <title>ʚ ɞ</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
             background: black;
-            color: pink;
-            font-family: monospace;
+            position: relative;
         }
-        canvas {
-            display: block;
+        .heart, .text, .meteor {
+            position: absolute;
+            font-size: 20px;
+            pointer-events: none;
+            animation-timing-function: linear;
+        }
+        .heart {
+            color: pink;
+        }
+        .text {
+            font-size: 24px;
+        }
+        .meteor {
+            color: lightblue;
+            font-size: 30px;
         }
     </style>
 </head>
 <body>
-    <canvas id="loveRain"></canvas>
     <script>
-        const canvas = document.getElementById('loveRain');
-        const ctx = canvas.getContext('2d');
+        const emojis = [
+            "ʚ ɞ", "⌯'ᵕ'⌯", "ʚ✞～՞˶･֊･˶՞", "⌯ᕑᗢᓫ⌯ಣ", 
+            "՞˶˃ ᵕ ˂˶՞", "⌯>ᴗo⌯ಣ", "ʢᴗ.ᴗʡᶻ", "love", 
+            "⌯'ᵕ'⌯：^_−☆", "*💭·🍶ʚ˃ ᵕ ˂ ɞ", "ʚ✞ɞ", 
+            "◍˃ᵕ˂◍", "˃̶͈ ꇴ ˂̶͈", "ᐡ•͈ ·̭ •͈ᐡ", "꒦ິᯅ꒦ີ", 
+            "˙ᯅ·", "˶ᵒ ᵕ ˂˶", "ʢᴗ.ᴗʡᶻ･֊･", "꒦ິ^꒦ິ", 
+            "ʢ˶ᵒ ᵕ ˂˶ʡᶻ", "ᗜ ˰ ᗜ", "⑉･ᴗ･⑉", "^>៸៸៸៸<^", 
+            "՞˶･֊･˶՞", "韩思月"
+        ];
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const colors = ["pink", "white", "lavender", "lightblue"];
 
-        const letters = "love 李思怡".split("");
-        const fontSize = 20;
-        const columns = Math.floor(canvas.width / fontSize);
-        const drops = new Array(columns).fill(0);
-
-        function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'pink';
-            ctx.font = fontSize + 'px monospace';
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters[Math.floor(Math.random() * letters.length)];
-                const x = i * fontSize;
-                const y = drops[i] * fontSize;
-                ctx.fillText(text, x, y);
-                if (y > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
+        function createHeart() {
+            let heart = document.createElement("div");
+            heart.innerHTML = "⋆͛♥︎⋆͛";
+            heart.className = "heart";
+            document.body.appendChild(heart);
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.top = "-30px";
+            heart.style.opacity = Math.random();
+            let duration = Math.random() * 3 + 2;
+            heart.style.animation = `fall ${duration}s linear`;
+            setTimeout(() => heart.remove(), duration * 1000);
+        }
+        
+        function createText() {
+            let text = document.createElement("div");
+            text.className = "text";
+            // 增加“韩思月”和“love”出现的频率
+            const frequentEmojis = ["韩思雨", "love"];
+            const randomEmoji = Math.random() < 0.5 ? frequentEmojis[Math.floor(Math.random() * frequentEmojis.length)] : emojis[Math.floor(Math.random() * emojis.length)];
+            text.innerHTML = randomEmoji;
+            text.style.color = colors[Math.floor(Math.random() * colors.length)];
+            document.body.appendChild(text);
+            text.style.left = Math.random() * window.innerWidth + "px";
+            text.style.top = "-40px";
+            let duration = 3;
+            text.style.animation = `fall ${duration}s linear`;
+            setTimeout(() => text.remove(), duration * 1000);
+        }
+        
+        function createMeteor() {
+            let meteor = document.createElement("div");
+            meteor.innerHTML = "★";
+            meteor.className = "meteor";
+            document.body.appendChild(meteor);
+            let startX = Math.random() * window.innerWidth;
+            let startY = Math.random() * window.innerHeight * 0.5;
+            meteor.style.left = startX + "px";
+            meteor.style.top = startY + "px";
+            let duration = 1.5;
+            meteor.style.animation = `meteorMove ${duration}s linear`;
+            setTimeout(() => meteor.remove(), duration * 1000);
+        }
+        
+        setInterval(createHeart, 100);
+        setInterval(createText, 200); // 增加颜文字的密度
+        setInterval(createMeteor, 2000);
+        
+        document.head.insertAdjacentHTML("beforeend", `
+            <style>
+                @keyframes fall {
+                    from { transform: translateY(0); }
+                    to { transform: translateY(100vh); }
                 }
-                drops[i]++;
-            }
-        }
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-
-        setInterval(draw, 50);
+                @keyframes meteorMove {
+                    from { transform: translate(0, 0); }
+                    to { transform: translate(100px, 100px); opacity: 0; }
+                }
+            </style>
+        `);
     </script>
 </body>
 </html>
